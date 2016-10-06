@@ -16,5 +16,6 @@ public:
 	bool strsub(char[], int);
 	bool strcomp(string);
 	const char * cstyle();
+	bool strrep(char[], char[]);
 };
 

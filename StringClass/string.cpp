@@ -6,7 +6,7 @@ string::string(char in[])
 
 	for (int i = 0; i < 255; i++) //Loop
 	{
-		if (in[i] == 0) //Until end
+		if (in[i] == '\0') //Until end
 			break;
 		else
 		{
@@ -67,12 +67,14 @@ void string::strapp(string app)
 void string::strpre(string pre)
 {
 	int length = strcnt();
+	int prelen = pre.strcnt();
+	int a;
 
 	/* Move the existing string forward by the 
 	amount of characters in the prepending string */
-	for (int i = 0; i < length; i++) 
+	for (int i = strcnt(); i > -1; i--)
 	{
-		m_str[length + i] = m_str[i];
+		m_str[i + prelen] = m_str[i];
 	}
 
 	/* Add the prepending string in the leftover slots */
@@ -97,7 +99,7 @@ void string::strlow()
 			m_str[i] = m_str[i] + 32; //bump the ASCII value to its lowercase counterpart
 		else if (m_str[i] == '\0') //but if it's the end, break the loop
 			break;
-		else //if it's any other character, continue loop
+		else //if it's any other character, skip over and continue
 			continue; 
 	}
 
@@ -108,14 +110,14 @@ void string::strlow()
 
 void string::strcap()
 {
-	for (int i = 0; i < strcnt(); i++)
+	for (int i = 0; i < strcnt(); i++) //for every letter
 	{
-		if (m_str[i] >= 97 && m_str[i] <= 122)
-			m_str[i] = m_str[i] - 32;
-		else if (m_str[i] == '\0')
+		if (m_str[i] >= 97 && m_str[i] <= 122) //if it's lowercase
+			m_str[i] = m_str[i] - 32; //bump the ASCII value to its capital counterpart
+		else if (m_str[i] == '\0') //but if it's the end, break the loop
 			break;
-		else
-			continue;
+		else //if it's any other character, skip over and continue
+			continue; 
 	}
 }
 
@@ -184,7 +186,7 @@ bool string::strsub(char sub[], int ind)
 	/* This loop goes through every character
 	in the string, and finds matches */
 
-	for (int i = ind-1; i < sublength; i++) //Start at index, end at substring length
+	for (int i = ind; i < strcnt(); i++)
 	{
 		if (m_str[i] == sub[0])	//If the first letter matches
 		{
@@ -239,4 +241,71 @@ bool string::strcomp(string comp)
 const char * string::cstyle()
 {
 	return m_str;
+}
+
+
+bool string::strrep(char in1[], char in2[])
+{
+
+	int in1length = 0;
+	int in2length = 0;
+	int match = 0;
+	int index = 0;
+
+	for (int i = 0; i < 255; i++) //Finds the length of the substring to find
+	{
+		if (in1[i] == 0)
+			break;
+		else
+			in1length++;
+	}
+
+	for (int i = 0; i < 255; i++) //Finds the length of the replacement substring
+	{
+		if (in2[i] == 0)
+			break;
+		else
+			in2length++;
+	}
+
+	/* This loop goes through every character
+	in the string, and finds matches */
+
+	for (int i = 0; i < strcnt(); i++)
+	{
+		index = i;
+		if (m_str[i] == in1[0])	//If the first letter matches
+		{
+			for (int o = 0; o < in1length; o++) //Start a loop to match the rest of the substring
+			{
+				if (m_str[i + o] == in1[o]) //If letter in string = letter of substring
+					match++;	//Add 1 to matching letters
+			}
+
+			if (match != in1length) //If the entire string did not match, reset
+				match = 0;
+		}
+
+		if (match == in1length) //If the substring is found, break the loop
+			break;
+	}
+
+	if (match == in1length) //If matching charas equals charas in string
+	{
+		if (in1length < in2length) //If replacement string is larger than the substring
+			for (int i = strcnt(); i >= index; i--)
+				m_str[i + (in2length - in1length)] = m_str[i]; //Shift the rest of the string forwards
+		else if (in1length > in2length) //But if the replacement string is smaller
+			for (int i = (index + in2length - 1); i < strcnt(); i++)
+				m_str[i] = m_str[i + (in1length - in2length)]; //Shift the rest of the string backwards
+
+
+		for (int i = 0; i < in2length; i++) //Insert the replacement string
+			m_str[index + i] = in2[i];
+
+		return true; //Yes, I found the substring and it has been replaced
+
+	}
+	else if (match != in1length)
+		return false; //No, I could not find the substring
 }
