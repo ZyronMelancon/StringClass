@@ -8,12 +8,15 @@ void main()
 	string sdf = "Lol";
 	string sdfg = "LOLONEBLAH";
 	string sdfgh = "ThisIsAString";
+	string sdfghj = " ";
 
 	char *input = new char[256];
 	char *input2 = new char[256];
 	int input3;
 	char *input4 = new char[256];
 	char *input5 = new char[256];
+	char *input6 = new char[256];
+	int input7;
 
 	std::cout << "String 's': " << s.cstyle() << std::endl;
 	std::cout << "String 'sd': " << sd.cstyle() << std::endl;
@@ -29,6 +32,13 @@ void main()
 	std::cout << "String 's' lowercase: " << s.cstyle() << std::endl;
 	s.strcap();
 	std::cout << "String 's' capital: " << s.cstyle() << std::endl;
+	printf("\n");
+
+	std::cout << "Character return test:" << std::endl;
+	std::cout << "Input an index number: " << std::endl;
+	std::cin >> input7;
+	std::cout << "The character at index " << input7 << " is " << s.strret(input7) << "." << std::endl;
+
 	printf("\n");
 
 	std::cout << "Sub-string search test:" << std::endl;
@@ -73,4 +83,6 @@ void main()
 		std::cout << "Sub-string not found!" << std::endl;
 
 	system("pause");
+
+
 }

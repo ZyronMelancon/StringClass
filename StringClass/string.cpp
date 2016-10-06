@@ -244,6 +244,8 @@ const char * string::cstyle()
 }
 
 
+
+
 bool string::strrep(char in1[], char in2[])
 {
 
